@@ -159,7 +159,9 @@ func (f *Frontend) startRequestProcessor() {
 		f.assets.ServeWebViewRequest(request)
 	}
 }
+func (f *Frontend) AutoZoomFactor(width int, height int) {
 
+}
 func (f *Frontend) startCallbackProcessor() {
 	for callback := range callbackBuffer {
 		err := f.handleCallback(callback)

@@ -137,6 +137,15 @@ func (f *Frontend) WindowSetDarkTheme() {
 	f.mainWindow.SetTheme(windows.Dark)
 }
 
+func GetScreen() (int, int) {
+	// SM_CXFRAME: 窗口左右边框宽度
+	framex := w32.GetSystemMetrics(w32.SM_CXSCREEN)
+	framey := w32.GetSystemMetrics(w32.SM_CYSCREEN)
+	//logger.New(nil).Info("SCREEN   %v %v", framex, framey)
+
+	return framex, framey
+}
+
 func (f *Frontend) Run(ctx context.Context) error {
 	f.ctx = ctx
 
@@ -180,6 +189,25 @@ func (f *Frontend) Run(ctx context.Context) error {
 			}
 		}
 
+		if opts := f.frontendOptions.Windows; opts != nil {
+			if opts.ZoomWidth > 0.0 {
+				screenX, screenY := GetScreen()
+				width, _ := f.WindowGetSize()
+				height2 := float64(width) * (float64(screenY) / float64(screenX))
+				f.WindowSetSize(width, int(height2))
+				f.AutoZoomFactor(width, opts.ZoomWidth)
+			}
+		}
+
+		//GetScreen()
+		//width, height := f.WindowGetSize()
+		//logger.New(nil).Info("Size   %v %v", width, height)
+		//rect := w32.GetClientRect(f.mainWindow.Handle())
+		//
+		//logger.New(nil).Info(" %v %v", rect.Right-rect.Left, rect.Bottom-rect.Top)
+		//
+		//f.chromium.PutZoomFactor(1)
+
 		// Clear minimizing flag for all non-minimize size events
 		// 对于所有非最小化的尺寸变化事件,清除最小化标志
 		// Reference: https://github.com/wailsapp/wails/issues/3951
@@ -211,6 +239,36 @@ func (f *Frontend) Run(ctx context.Context) error {
 	}()
 	mainWindow.UpdateTheme()
 	return nil
+}
+
+func (f *Frontend) AutoZoomFactor(width int, sizeWidth int) {
+	if f.mainWindow != nil {
+		var rgrc w32.RECT
+		monitor := w32.MonitorFromRect(&rgrc, w32.MONITOR_DEFAULTTONULL)
+		var monitorInfo w32.MONITORINFO
+		monitorInfo.CbSize = uint32(unsafe.Sizeof(monitorInfo))
+		if monitor != 0 && w32.GetMonitorInfo(monitor, &monitorInfo) {
+
+			var dpiX, dpiY uint
+			w32.GetDPIForMonitor(monitor, w32.MDT_EFFECTIVE_DPI, &dpiX, &dpiY)
+
+			//int32(winc.ScaleWithDPI(1920, dpiY))
+			dpi := winc.ScaleToDefaultDPI(width, dpiX)
+
+			//maxWidth := int32(winc.ScaleWithDPI(maxWidth, dpiX))
+			//if maxWidth > 0 && rgrc.Right-rgrc.Left > maxWidth {
+			//	rgrc.Right = rgrc.Left + maxWidth
+			//}
+			//
+			//maxHeight := int32(winc.ScaleWithDPI(maxHeight, dpiY))
+			//if maxHeight > 0 && rgrc.Bottom-rgrc.Top > maxHeight {
+			//	rgrc.Bottom = rgrc.Top + maxHeight
+			//}
+			f.chromium.PutZoomFactor(float64(dpi) / float64(sizeWidth))
+
+		}
+
+	}
 }
 
 func (f *Frontend) WindowClose() {

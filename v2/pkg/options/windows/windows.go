@@ -67,8 +67,8 @@ type Options struct {
 
 	IsZoomControlEnabled bool
 	ZoomFactor           float64
-
-	DisablePinchZoom bool
+	ZoomWidth            int
+	DisablePinchZoom     bool
 
 	// Disable all window decorations in Frameless mode, which means no "Aero Shadow" and no "Rounded Corner" will be shown.
 	// "Rounded Corners" are only available on Windows 11.

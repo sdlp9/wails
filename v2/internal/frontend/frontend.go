@@ -84,6 +84,8 @@ type Frontend interface {
 	Show()
 	Quit()
 
+	//设置缩放比例
+	AutoZoomFactor(width int, height int)
 	// Dialog
 	OpenFileDialog(dialogOptions OpenDialogOptions) (string, error)
 	OpenMultipleFilesDialog(dialogOptions OpenDialogOptions) ([]string, error)
