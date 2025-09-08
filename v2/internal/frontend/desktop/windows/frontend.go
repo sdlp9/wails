@@ -264,7 +264,8 @@ func (f *Frontend) AutoZoomFactor(hegith int, sizeHegith int) {
 			//if maxHeight > 0 && rgrc.Bottom-rgrc.Top > maxHeight {
 			//	rgrc.Bottom = rgrc.Top + maxHeight
 			//}
-			f.chromium.PutZoomFactor( float64(sizeHegith)/float64(dpi) )
+			logger.New(nil).Info("PutZoomFactor %v %v",  float64(dpi), float64(sizeHegith))
+			f.chromium.PutZoomFactor( float64(dpi)/float64(sizeHegith) )
 
 		}
 
