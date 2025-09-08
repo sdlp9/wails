@@ -195,7 +195,7 @@ func (f *Frontend) Run(ctx context.Context) error {
 				width, _ := f.WindowGetSize()
 				height2 := float64(width) * (float64(screenY) / float64(screenX))
 				f.WindowSetSize(width, int(height2))
-				f.AutoZoomFactor(width, opts.ZoomWidth)
+				f.AutoZoomFactor(int(height2), opts.ZoomWidth)
 			}
 		}
 
@@ -241,7 +241,7 @@ func (f *Frontend) Run(ctx context.Context) error {
 	return nil
 }
 
-func (f *Frontend) AutoZoomFactor(width int, sizeWidth int) {
+func (f *Frontend) AutoZoomFactor(hegith int, sizeHegith int) {
 	if f.mainWindow != nil {
 		var rgrc w32.RECT
 		monitor := w32.MonitorFromRect(&rgrc, w32.MONITOR_DEFAULTTONULL)
@@ -253,7 +253,7 @@ func (f *Frontend) AutoZoomFactor(width int, sizeWidth int) {
 			w32.GetDPIForMonitor(monitor, w32.MDT_EFFECTIVE_DPI, &dpiX, &dpiY)
 
 			//int32(winc.ScaleWithDPI(1920, dpiY))
-			dpi := winc.ScaleToDefaultDPI(width, dpiX)
+			dpi := winc.ScaleToDefaultDPI(hegith, dpiY)
 
 			//maxWidth := int32(winc.ScaleWithDPI(maxWidth, dpiX))
 			//if maxWidth > 0 && rgrc.Right-rgrc.Left > maxWidth {
@@ -264,7 +264,7 @@ func (f *Frontend) AutoZoomFactor(width int, sizeWidth int) {
 			//if maxHeight > 0 && rgrc.Bottom-rgrc.Top > maxHeight {
 			//	rgrc.Bottom = rgrc.Top + maxHeight
 			//}
-			f.chromium.PutZoomFactor(float64(dpi) / float64(sizeWidth))
+			f.chromium.PutZoomFactor(float64(dpi) / float64(sizeHegith))
 
 		}
 
