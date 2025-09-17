@@ -242,7 +242,7 @@ func (f *Frontend) Run(ctx context.Context) error {
 }
 
 func (f *Frontend) WindowDestroy() {
-	w32.DestroyWindow(f.mainWindow.Handle())
+	//w32.DestroyWindow(f.mainWindow.Handle())
 
 	w32.PostQuitMessage(0)
 
