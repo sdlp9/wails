@@ -159,6 +159,8 @@ func (f *Frontend) startRequestProcessor() {
 		f.assets.ServeWebViewRequest(request)
 	}
 }
+func (f *Frontend) WindowDestroy() {
+}
 func (f *Frontend) AutoZoomFactor(width int, height int) {
 
 }

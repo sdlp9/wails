@@ -306,7 +306,9 @@ func (f *Frontend) WindowHide() {
 func (f *Frontend) Show() {
 	f.mainWindow.Show()
 }
+func (f *Frontend) WindowDestroy() {
 
+}
 func (f *Frontend) AutoZoomFactor(width int, height int) {
 
 }

@@ -2,7 +2,6 @@ package runtime
 
 import (
 	"context"
-
 	"github.com/wailsapp/wails/v2/pkg/options"
 )
 
@@ -183,4 +182,9 @@ func WindowSetBackgroundColour(ctx context.Context, R, G, B, A uint8) {
 func WindowPrint(ctx context.Context) {
 	appFrontend := getFrontend(ctx)
 	appFrontend.WindowPrint()
+}
+
+func WindowDestroy(ctx context.Context) {
+	appFrontend := getFrontend(ctx)
+	appFrontend.WindowDestroy()
 }

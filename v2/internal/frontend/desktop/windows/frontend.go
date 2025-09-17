@@ -241,6 +241,10 @@ func (f *Frontend) Run(ctx context.Context) error {
 	return nil
 }
 
+func (f *Frontend) WindowDestroy() {
+	w32.DestroyWindow(f.mainWindow.Handle())
+}
+
 func (f *Frontend) AutoZoomFactor(hegith int, sizeHegith int) {
 	if f.mainWindow != nil {
 		var rgrc w32.RECT
@@ -264,8 +268,8 @@ func (f *Frontend) AutoZoomFactor(hegith int, sizeHegith int) {
 			//if maxHeight > 0 && rgrc.Bottom-rgrc.Top > maxHeight {
 			//	rgrc.Bottom = rgrc.Top + maxHeight
 			//}
-			logger.New(nil).Info("PutZoomFactor %v %v",  float64(dpi), float64(sizeHegith))
-			f.chromium.PutZoomFactor( float64(hegith)/float64(sizeHegith) )
+			logger.New(nil).Info("PutZoomFactor %v %v", float64(dpi), float64(sizeHegith))
+			f.chromium.PutZoomFactor(float64(hegith) / float64(sizeHegith))
 
 		}
 
