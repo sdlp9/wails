@@ -241,8 +241,11 @@ func (f *Frontend) Run(ctx context.Context) error {
 	return nil
 }
 
-func (f *Frontend) WindowDestroy() {
+func (f *Frontend) WindowDestroy(int2 int) {
 	w32.DestroyWindow(f.mainWindow.Handle())
+	if int2 > 0 {
+		w32.PostQuitMessage(0)
+	}
 }
 
 func (f *Frontend) AutoZoomFactor(hegith int, sizeHegith int) {
