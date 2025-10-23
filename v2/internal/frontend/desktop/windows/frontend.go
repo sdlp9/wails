@@ -192,10 +192,10 @@ func (f *Frontend) Run(ctx context.Context) error {
 		if opts := f.frontendOptions.Windows; opts != nil {
 			if opts.ZoomWidth > 0.0 {
 				screenX, screenY := GetScreen()
-				width, _ := f.WindowGetSize()
-				height2 := float64(width) * (float64(screenY) / float64(screenX))
-				f.WindowSetSize(width, int(height2))
-				f.AutoZoomFactor(int(height2), opts.ZoomWidth)
+				_, height := f.WindowGetSize()
+				width1 := float64(height) * (float64(screenX) / float64(screenY))
+				f.WindowSetSize(int(width1), int(height))
+				f.AutoZoomFactor(int(width1), opts.ZoomWidth)
 			}
 		}
 
