@@ -190,12 +190,19 @@ func (f *Frontend) Run(ctx context.Context) error {
 		}
 
 		if opts := f.frontendOptions.Windows; opts != nil {
+			event, _ := arg.Data.(*winc.SizeEventData)
 			if opts.ZoomWidth > 0.0 {
 				screenX, screenY := GetScreen()
-				_, height := f.WindowGetSize()
+				width, height := f.WindowGetSize()
 				width1 := float64(height) * (float64(screenX) / float64(screenY))
-				f.WindowSetSize(int(width1), int(height))
-				f.AutoZoomFactor(int(width1), opts.ZoomWidth)
+				if event.Type == w32.SIZE_MAXIMIZED {
+					f.WindowSetSize(int(width), int(height))
+				} else {
+					f.WindowSetSize(int(width1), int(height))
+				}
+				logger.New(nil).Info("height %v  width %v", float64(height), int(width1))
+
+				f.AutoZoomFactor(int(height), opts.ZoomWidth)
 			}
 		}
 
