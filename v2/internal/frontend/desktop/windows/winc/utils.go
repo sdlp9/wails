@@ -152,5 +152,6 @@ func ScaleWithDPI(pixels int, dpi uint) int {
 
 // ScaleToDefaultDPI scales the pixels from scaled DPI-Space to default DPI-Space (96).
 func ScaleToDefaultDPI(pixels int, dpi uint) int {
-	return (pixels * 96) / int(dpi)
+
+	return (pixels * 96) / (int(dpi))
 }
